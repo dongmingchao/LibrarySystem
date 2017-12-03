@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="339.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Login">
+   <children>
+      <Button fx:id="confirm" layoutX="112.0" layoutY="268.0" mnemonicParsing="false" text="登陆" />
+      <Button layoutX="215.0" layoutY="268.0" mnemonicParsing="false" text="注册" />
+      <Button layoutX="311.0" layoutY="268.0" mnemonicParsing="false" text="退出" />
+      <Label layoutX="115.0" layoutY="114.0" text="账号" />
+      <Label layoutX="115.0" layoutY="170.0" text="密码" />
+      <TextField fx:id="account" layoutX="197.0" layoutY="109.0" />
+      <Label layoutX="147.0" layoutY="41.0" prefHeight="27.0" prefWidth="183.0" text="图书管理系统">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="password" layoutX="197.0" layoutY="165.0" />
+      <ChoiceBox fx:id="identity" layoutX="197.0" layoutY="220.0" prefWidth="150.0" AnchorPane.topAnchor="220.0" />
+      <Label layoutX="115.0" layoutY="225.0" text="您是" />
+   </children>
+</AnchorPane>
