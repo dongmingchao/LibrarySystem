@@ -15,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         root = FXMLLoader.load(getClass().getResource("login.fxml"));
-        primaryStage.setTitle("图书馆理系统");
+        primaryStage.setTitle("图书馆理系统-登陆");
         primaryStage.setScene(new Scene(root, 472, 339));
         primaryStage.show();
         mainStage = primaryStage;

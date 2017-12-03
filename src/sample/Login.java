@@ -4,11 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 
 public class Login {
@@ -37,12 +42,12 @@ public class Login {
         identity.setItems(identityList);
         confirm.setOnAction(this::toLogin);
         identity.setOnAction(this::hideTip);
-        account.setOnAction(this::hideTip);
-        password.setOnAction(this::hideTip);
+        account.setOnKeyTyped(this::hideTip);
+        password.setOnKeyTyped(this::hideTip);
     }
 
-    private void hideTip(ActionEvent event){
-        Tooltip tip = ((ChoiceBox) event.getSource()).getTooltip();
+    private void hideTip(Event event){
+        Tooltip tip = ((Control) event.getSource()).getTooltip();
         if (tip!=null) tip.hide();
     }
 
@@ -67,6 +72,18 @@ public class Login {
         passwd = password.getText();
         System.out.println(user+","+passwd+identity.getValue());
         controller.app.mainStage.hide();
+        try {
+            SplitPane mainPane = FXMLLoader.load(getClass().getResource("main.fxml"));
+            controller.app.root = mainPane;
+            Stage main = new Stage();
+            main.setTitle("图书管理系统");
+            main.setScene(new Scene(mainPane));
+            controller.app.mainStage = main;
+            main.show();
+        } catch (IOException e) {
+            System.out.println("界面丢失");
+            e.printStackTrace();
+        }
     }
 
     private void showTip(String tipText, Control control){
