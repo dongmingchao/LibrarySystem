@@ -22,7 +22,6 @@ public class Main extends Application {
         controller=new Controller();
         controller.app = this;
         getUserData = getLogin();
-        System.out.println(getUserData.controller);
     }
 
     public Login getLogin(){

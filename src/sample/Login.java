@@ -1,11 +1,9 @@
 package sample;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -38,7 +36,6 @@ public class Login {
     void init(){
         lookupAll();
         identityList.addAll("用户","管理员");
-        System.out.println(identity);
         identity.setItems(identityList);
         confirm.setOnAction(this::toLogin);
         identity.setOnAction(this::hideTip);
@@ -70,7 +67,6 @@ public class Login {
         }
         user=account.getText();
         passwd = password.getText();
-        System.out.println(user+","+passwd+identity.getValue());
         controller.app.mainStage.hide();
         try {
             SplitPane mainPane = FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -80,6 +76,9 @@ public class Login {
             main.setScene(new Scene(mainPane));
             controller.app.mainStage = main;
             main.show();
+            controller.my_username.set(user);
+            controller.my_identity.set(identity.getValue());
+            controller.init();
         } catch (IOException e) {
             System.out.println("界面丢失");
             e.printStackTrace();
