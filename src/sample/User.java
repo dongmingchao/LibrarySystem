@@ -76,15 +76,31 @@ public class User {
     }
 
     private void addToTable(Book book){
-        if (book.borrowTime.isAfter(LocalDate.now()))
+        all.getValue().number.set(all.getValue().number.get()+book.number.get());
+        if (book.borrowTime.isAfter(LocalDate.now())) {
             inDate.getChildren().add(new TreeItem<>(book));
-        else outOfDate.getChildren().add(new TreeItem<>(book));
+            inDate.getValue().number.set(inDate.getValue().number.get()+book.number.get());
+        } else {
+            outOfDate.getChildren().add(new TreeItem<>(book));
+            outOfDate.getValue().number.set(outOfDate.getValue().number.get()+book.number.get());
+        }
     }
 
     private void removeFromTable(Book book){
-        if (book.borrowTime.isAfter(LocalDate.now()))
-            inDate.getChildren().remove(inDate.getChildren().stream().filter(each -> each.getValue().equals(book)).findFirst().orElse(null));
-        else outOfDate.getChildren().remove(outOfDate.getChildren().stream().filter(each -> each.getValue().equals(book)).findFirst().orElse(null));
+        TreeItem<Book> what;
+        if (book.borrowTime.isAfter(LocalDate.now())) {
+            what = inDate.getChildren().stream().filter(each -> each.getValue().equals(book)).findFirst().orElse(null);
+            if (what==null) return;
+            inDate.getChildren().remove(what);
+            inDate.getValue().number.set(inDate.getValue().number.get()-what.getValue().number.get());
+        }
+        else {
+            what = outOfDate.getChildren().stream().filter(each -> each.getValue().equals(book)).findFirst().orElse(null);
+            if (what==null) return;
+            outOfDate.getChildren().remove(what);
+            outOfDate.getValue().number.set(outOfDate.getValue().number.get()-what.getValue().number.get());
+        }
+        all.getValue().number.set(all.getValue().number.get()-what.getValue().number.get());
     }
 
     public void borrow(List<Book> books) {

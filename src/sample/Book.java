@@ -148,7 +148,7 @@ public class Book {
         if (number.get()==0) Controller.showAll.remove(this);
     }
 
-    private void numberAdd(){
+    void numberAdd(){
         if (Controller.showAll.contains(this)){
             Book inlist = Controller.showAll.get(Controller.showAll.indexOf(this));
             inlist.number.setValue(inlist.number.get()+number.get());
