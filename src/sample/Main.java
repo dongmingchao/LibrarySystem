@@ -27,7 +27,7 @@ public class Main extends Application {
     public Login getLogin(){
         Login login = new Login();
         login.setParentPane((AnchorPane) root);
-        login.controller = controller;
+        Login.controller = controller;
         login.init();
         return login;
     }
