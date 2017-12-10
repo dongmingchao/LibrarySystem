@@ -29,6 +29,7 @@ public class User {
     TreeItem<Book> outOfDate = new TreeItem<Book>(new Book("已过期", "", "", 0));
     TreeItem<Book> inDate = new TreeItem<Book>(new Book("未过期", "", "", 0));
     TreeItem<Book> all = new TreeItem<Book>(new Book("全部", "", "", 0));
+    String fileName = "signedUser";
 
 
     public void setController(Controller controller) {
@@ -118,28 +119,37 @@ public class User {
     }
 
     public void saveBooks(){
-        File file = new File("signedUser");
+        File file = new File(fileName);
         try {
-            PrintWriter out = new PrintWriter("signedUser.bak");
+            PrintWriter out = new PrintWriter(fileName+".bak");
             Scanner in = new Scanner(file);
             while(in.hasNextLine()){
                 String line = in.nextLine();
-                String[] each = line.split(" ");
-                if (each[0].equals(name)){
-                    out.print(line+" <Books> ");
+                ArrayList<String> each = new ArrayList<>();
+                each.addAll(Arrays.asList(line.split(" ")));
+                if (each.get(0).equals(name)){
+                    if (each.indexOf("<Books>")==-1){
+                        out.print(line+" ");
+                    }else {
+                        for (int i = 0; i < each.indexOf("<Books>"); i++) {
+                            out.print(each.get(i) + " ");
+                        }
+                    }
+                    out.print("<Books> ");
                     hadBooks.forEach(i -> out.print(i+" "));
                     out.println("</Books>");
                 }else out.println(line);
             }
             in.close();
             out.close();
-            Files.delete(Paths.get("signedUser"));
-            new File("signedUser.bak").renameTo(file);
+            Files.delete(Paths.get(fileName));
+            new File(fileName+".bak").renameTo(file);
         } catch (IOException e) {
             System.out.println("文件写入出错");
             e.printStackTrace();
         }
     }
+
     @Override
     public String toString() {
         return name + " " + pass;

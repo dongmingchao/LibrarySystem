@@ -24,6 +24,7 @@ public class Admin extends User{
 
     Admin(String name, String pass,ArrayList<Book> hadBooks) {
         super(name, pass,hadBooks);
+        fileName = "signedAdmin";
     }
 
     void addBooks(List<Book> books){
@@ -76,39 +77,6 @@ public class Admin extends User{
         manage.setContent(managePane);
         managePane.setPadding(new Insets(30));
         controller.right.getTabs().add(manage);
-    }
-
-    @Override
-    public void saveBooks(){
-        File file = new File("signedAdmin");
-        try {
-            PrintWriter out = new PrintWriter("signedAdmin.bak");
-            Scanner in = new Scanner(file);
-            while(in.hasNextLine()){
-                String line = in.nextLine();
-                ArrayList<String> each = new ArrayList<>();
-                each.addAll(Arrays.asList(line.split(" ")));
-                if (each.get(0).equals(name)){
-                    if (each.indexOf("<Books>")==-1){
-                        out.print(line+" ");
-                    }else {
-                        for (int i = 0; i < each.indexOf("<Books>"); i++) {
-                            out.print(each.get(i) + " ");
-                        }
-                    }
-                    out.print("<Books> ");
-                    hadBooks.forEach(i -> out.print(i+" "));
-                    out.println("</Books>");
-                }else out.println(line);
-            }
-            in.close();
-            out.close();
-            Files.delete(Paths.get("signedAdmin"));
-            new File("signedAdmin.bak").renameTo(file);
-        } catch (IOException e) {
-            System.out.println("文件写入出错");
-            e.printStackTrace();
-        }
     }
 
     @Override
