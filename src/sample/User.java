@@ -23,12 +23,13 @@ import java.util.Scanner;
 public class User {
     String name;
     String pass;
+    int id;
     Controller controller;
     TreeTableView message;
     ArrayList<Book> hadBooks;
-    TreeItem<Book> outOfDate = new TreeItem<Book>(new Book("已过期", "", "", 0));
-    TreeItem<Book> inDate = new TreeItem<Book>(new Book("未过期", "", "", 0));
-    TreeItem<Book> all = new TreeItem<Book>(new Book("全部", "", "", 0));
+    TreeItem<Book> outOfDate = new TreeItem<Book>(new Book(-1,"已过期", "", "", 0));
+    TreeItem<Book> inDate = new TreeItem<Book>(new Book(-1,"未过期", "", "", 0));
+    TreeItem<Book> all = new TreeItem<Book>(new Book(-1,"全部", "", "", 0));
     String fileName = "signedUser";
 
 
@@ -36,10 +37,11 @@ public class User {
         this.controller = controller;
     }
 
-    public User(String name, String pass, ArrayList<Book> hadBooks) {
+    public User(int id,String name, String pass, ArrayList<Book> hadBooks) {
         this.name = name;
         this.pass = pass;
         this.hadBooks = hadBooks;
+        this.id = id;
     }
 
     void envInit() {
@@ -116,6 +118,16 @@ public class User {
     public void back(Book book){
         hadBooks.remove(book);
         removeFromTable(book);
+    }
+
+    public void saveBooksSQL(){
+        if (hadBooks==null) return;
+        StringBuilder fin = new StringBuilder();
+        hadBooks.forEach(each -> {
+            fin.append(each);
+            fin.append(" ");
+        });
+        SQL.update("UPDATE admin SET books=? where id=?",new Object[]{fin.substring(0,fin.length()-1),id});
     }
 
     public void saveBooks(){

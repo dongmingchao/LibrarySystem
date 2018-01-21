@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -42,8 +41,8 @@ public class Login {
         identity.setItems(identityList);
         confirm.setOnAction(this::toLogin);
         sign.setOnAction(this::toSign);
-        if (!backLastLogin("signedAdmin"))
-            backLastLogin("signedUser");
+//        if (!backLastLogin("signedAdmin"))
+//            backLastLogin("signedUser");
     }
 
 //    private void backLastLogin() {
@@ -119,7 +118,7 @@ public class Login {
         this.parentPane = parentPane;
     }
 
-    private boolean passInput(ActionEvent event) {
+    private boolean passNotInput(ActionEvent event) {
         boolean res = true;
         if (identity.getValue() == null) {
             FXtools.showTip("请选择您的身份", identity);
@@ -133,14 +132,14 @@ public class Login {
             FXtools.showTip("请输入您的密码", password);
             res = false;
         }
-        return res;
+        return !res;
     }
 
     private void toLogin(ActionEvent event) {
-        if (!passInput(event)) return;
+        if (passNotInput(event)) return;
         String level = "user";
         if (identity.getValue().equals("管理员")) level = "admin";
-        User person = Store.isSigned(account.getText(), level);
+        User person = Store.isSignedSQL(account.getText(), level);
         if (person == null) {
             FXtools.showTip("您还没有注册!", event);
             return;
@@ -150,7 +149,7 @@ public class Login {
                 return;
             } else Controller.holder = person;
         }
-        rememberLogin(account.getText(), level);
+//        rememberLogin(account.getText(), level);
         controller.app.mainStage.hide();
         try {
             SplitPane mainPane = FXMLLoader.load(getClass().getResource("main.fxml"));
@@ -200,11 +199,11 @@ public class Login {
     }
 
     private void toSign(ActionEvent event) {
-        if (!passInput(event)) return;
+        if (passNotInput(event)) return;
         if (identity.getValue().equals("管理员")) {
-            FXtools.showTip(Store.sign(account.getText(), password.getText(), "admin"), event);
+            FXtools.showTip(Store.signSQL(account.getText(), password.getText(), "admin"), event);
         } else {
-            FXtools.showTip(Store.sign(account.getText(), password.getText(), "user"), event);
+            FXtools.showTip(Store.signSQL(account.getText(), password.getText(), "user"), event);
         }
     }
 }
