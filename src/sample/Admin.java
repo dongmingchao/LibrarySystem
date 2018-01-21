@@ -3,17 +3,12 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Admin extends User{
     TextField setBookName;
@@ -22,8 +17,8 @@ public class Admin extends User{
     TextField setBookNumber;
     Button add;
 
-    Admin(String name, String pass,ArrayList<Book> hadBooks) {
-        super(name, pass,hadBooks);
+    Admin(int id,String name, String pass,ArrayList<Book> hadBooks) {
+        super(id,name, pass,hadBooks);
         fileName = "signedAdmin";
     }
 
@@ -41,7 +36,9 @@ public class Admin extends User{
         Integer number;
         try {
             number = Integer.valueOf(setBookNumber.getText());
-            Book book = new Book(setBookName.getText(),setBookAuthor.getText(),setBookPublish.getText(),number);
+            int bookId = 1;
+            while (Store.bookIndex.contains(bookId)) bookId++;
+            Book book = new Book(bookId,setBookName.getText(),setBookAuthor.getText(),setBookPublish.getText(),number);
             controller.showAll.add(book);
             Store.getAddedBooks().add(book);
             setBookName.setText("");
@@ -77,6 +74,18 @@ public class Admin extends User{
         manage.setContent(managePane);
         managePane.setPadding(new Insets(30));
         controller.right.getTabs().add(manage);
+    }
+
+    @Override
+    public void saveBooksSQL(){
+        if (hadBooks==null) return;
+        if (hadBooks.size()==0) return;
+        StringBuilder fin = new StringBuilder();
+        hadBooks.forEach(each -> {
+            fin.append(each);
+            fin.append(" ");
+        });
+        SQL.update("UPDATE admin SET books=? where id=?",new Object[]{fin.substring(0,fin.length()-1),id});
     }
 
     @Override

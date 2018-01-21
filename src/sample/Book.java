@@ -102,22 +102,24 @@ public class Book {
     }
 
     LocalDate borrowTime;
+    int id;
 
-    public Book(String name, String author, String publish, Integer number) {
+    public Book(int id,String name, String author, String publish, Integer number) {
+        this.id = id;
         this.name = new SimpleStringProperty(name);
         this.author = new SimpleStringProperty(author);
         this.publish = new SimpleStringProperty(publish);
         this.number = new SimpleIntegerProperty(number);
     }
 
-    public Book(String name, String author, String publish, Integer number, LocalDate borrowTime) {
-        this(name,author,publish,number);
+    public Book(int id,String name, String author, String publish, Integer number, LocalDate borrowTime) {
+        this(id,name,author,publish,number);
         this.borrowTime = borrowTime;
     }
 
     @Override
     public String toString() {
-        return name.get() + "," + author.get() + "," + publish.get() + "," + number.get() + "," + borrowTime;
+        return id+","+name.get() + "," + author.get() + "," + publish.get() + "," + number.get() + "," + borrowTime;
     }
 
     private Button cancel;
@@ -162,7 +164,7 @@ public class Book {
                 return;
             }
             numberSub();
-            Controller.holder.borrow(new Book(name.get(),author.get(),publish.get(),choice.getValue(),date.getValue()));
+            Controller.holder.borrow(new Book(id,name.get(),author.get(),publish.get(),choice.getValue(),date.getValue()));
             FXtools.showTip("借书成功！",jumpReason);
             borrowStage.hide();
         });

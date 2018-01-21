@@ -53,15 +53,15 @@ public class Controller {
         holder.setController(this);
         holder.envInit();
         holder.initPersonTable();
-        Store.importBooks();
-        showAll = FXCollections.observableArrayList(Store.importBooks());
+        Store.importBooksSQL();
+        showAll = FXCollections.observableArrayList(Store.importBooksSQL());
         tableViewInit();
         this.app.mainStage.setOnCloseRequest(this::closeAndSave);
     }
 
     private void closeAndSave(WindowEvent event){
-        Store.saveBooks();
-        holder.saveBooks();
+        Store.saveBooksSQL();
+        holder.saveBooksSQL();
     }
 
     private void tableViewInit(){
